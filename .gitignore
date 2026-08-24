@@ -1,0 +1,8 @@
+# skills instaladas localmente — vieram de outros projetos e de repos de terceiros,
+# não vão pro repositório público
+.claude/skills/
+
+# lixo de sistema
+Thumbs.db
+desktop.ini
+.DS_Store

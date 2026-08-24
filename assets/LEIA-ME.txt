@@ -1,0 +1,11 @@
+O hero carrega assets/zebra-king.jpg (o retrato do rei no trono).
+
+A foto e 16:9, mas no desktop ela e cortada em 4:5 via CSS
+(object-fit: cover; object-position: 52% 42%) pra virar retrato real
+e manter coroa, cara e torso no enquadramento. No mobile volta pra 16:9.
+
+Pra trocar a foto: sobrescreve este arquivo mantendo o nome.
+Se salvar como .png, o codigo faz fallback sozinho.
+Se o arquivo sumir, a moldura se esconde e o texto ocupa a largura toda.
+
+Ajuste fino do corte: variavel object-position na regra .king-frame img.
