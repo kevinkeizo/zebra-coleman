@@ -331,6 +331,26 @@
   .reset-btn:hover{color:var(--velvet-hot);border-color:var(--velvet-hot);}
   .reset-btn:active{transform:scale(.97);}
 
+  .backup-row{
+    display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.6rem;
+  }
+  .backup-btn{
+    display:inline-flex;align-items:center;gap:.5rem;
+    background:none;border:1px solid rgba(214,164,25,.3);
+    padding:.55rem .9rem;cursor:pointer;
+    font-family:var(--sign);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold);
+    transition:transform 140ms var(--ease-out),background 160ms ease,border-color 160ms ease;
+  }
+  .backup-btn:hover{background:rgba(214,164,25,.1);border-color:var(--gold);}
+  .backup-btn:active{transform:scale(.97);}
+  .backup-note{
+    width:100%;margin-top:.4rem;font-family:var(--sign);font-size:.7rem;
+    color:var(--stone-600);letter-spacing:.02em;
+  }
+  .backup-note.ok{color:var(--gold);}
+  .backup-note.err{color:var(--velvet-hot);}
+
   .coach{
     margin-top:1.75rem;padding:1.35rem 1.5rem;
     border:var(--rule);border-top:3px solid var(--velvet);
@@ -763,6 +783,19 @@
     <svg class="icon"><use href="#i-undo"/></svg>
     Tirar as anilhas do dia
   </button>
+
+  <div class="backup-row">
+    <button class="backup-btn" id="export-btn">
+      <svg class="icon"><use href="#i-external"/></svg>
+      Baixar backup
+    </button>
+    <label class="backup-btn" style="cursor:pointer;">
+      <svg class="icon"><use href="#i-undo"/></svg>
+      Restaurar backup
+      <input type="file" id="import-input" accept="application/json" style="display:none;">
+    </label>
+    <span class="backup-note" id="backup-note">Salva um arquivo com todo o histórico. Guarda ele em algum lugar — se o navegador apagar os dados de novo, é só restaurar.</span>
+  </div>
 
   <div class="coach">
     <h3><svg class="icon"><use href="#i-megaphone"/></svg> O rei falou</h3>
@@ -1639,6 +1672,51 @@
     DATA.find(d => d.id === dayId).exercises.forEach((_, ei) => paintCard(dayId, ei));
     updateDay(dayId);
     renderCalendar();
+  });
+
+  /* ---------- backup: exporta e restaura o localStorage inteiro ---------- */
+  function noteBackup(text, cls){
+    const el = document.getElementById('backup-note');
+    el.textContent = text;
+    el.className = 'backup-note' + (cls ? ' ' + cls : '');
+  }
+
+  document.getElementById('export-btn').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'zebra-coleman-backup-' + TODAY + '.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    noteBackup('Backup baixado. Guarda esse arquivo — no Drive, no WhatsApp pra você mesmo, onde não suma.', 'ok');
+  });
+
+  document.getElementById('import-input').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      let incoming;
+      try { incoming = JSON.parse(reader.result); }
+      catch (err) { noteBackup('Arquivo inválido — não é um backup do Zebra Coleman.', 'err'); return; }
+      if (!incoming || typeof incoming.log !== 'object' || typeof incoming.loads !== 'object'){
+        noteBackup('Arquivo inválido — não é um backup do Zebra Coleman.', 'err');
+        return;
+      }
+      // funde em vez de substituir: dia que já existe no aparelho não some
+      Object.keys(incoming.log).forEach(k => { db.log[k] = { ...db.log[k], ...incoming.log[k] }; });
+      Object.keys(incoming.loads).forEach(id => { db.loads[id] = { ...db.loads[id], ...incoming.loads[id] }; });
+      saveDB();
+      const activeDay = document.querySelector('.tab.active').dataset.day;
+      selectDay(activeDay);
+      renderCalendar();
+      noteBackup('Backup restaurado — histórico mesclado com o que já tinha aqui.', 'ok');
+    };
+    reader.readAsText(file);
+    e.target.value = '';
   });
 
   renderCalendar();
