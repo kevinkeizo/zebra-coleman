@@ -831,7 +831,7 @@
         { name: "Agachamento (livre ou goblet)", fig: "agachamento", meta: "5 x 8-10", target: "Quadríceps", note: "Pés na largura do ombro, desce até a coxa passar da paralela, joelho seguindo a linha do pé. Sobe empurrando o chão.", url: "https://www.youtube.com/watch?v=ge1vdJRP0UA" },
         { name: "Stiff ou levantamento terra romeno", fig: "stiff", meta: "4 x 8-10", target: "Posterior", note: "Joelho quase reto, empurra o quadril pra trás, desce até puxar o posterior. A barra desliza rente à perna, costas retas do começo ao fim.", url: "https://www.youtube.com/watch?v=JJ4SUrf-s_A" },
         { name: "Panturrilha em pé", fig: "panturrilha", meta: "4 x 12-15", target: "Panturrilha", note: "Desce até o calcanhar passar da linha do degrau — o alongamento é o que faz crescer. Segura 1 segundo em cima.", url: "https://www.youtube.com/watch?v=a1s-U4UQkIg" },
-        { name: "Elevação pélvica com halter", fig: "pelvica", meta: "3 x 15", target: "Glúteo", note: "Deitado, joelhos dobrados, pés apoiados no chão, halter ou anilha apoiado no quadril. Sobe até alinhar joelho-quadril-ombro, aperta o glúteo 1 segundo no topo. Dá pra fazer em casa — só precisa de um peso.", url: "https://www.youtube.com/watch?v=ILKA2jGtqS0" }
+        { name: "Coice de glúteo (4 apoios)", fig: "coice", meta: "3 x 15", target: "Glúteo", note: "Apoiado em mãos e joelhos, estende uma perna pra trás e pra cima até a coxa alinhar com o tronco, sem arquear a lombar. Aperta o glúteo no topo e desce controlado. Não precisa de peso nenhum — dá pra fazer em qualquer lugar.", url: "https://www.youtube.com/watch?v=M3Zn3rDxE_0" }
       ]
     },
     {
@@ -1081,6 +1081,16 @@
       rig('M137 30 V96 M137 96 H177 M137 34 H161') +
       head(153, 22) + body('M153 30 V56 M153 56 H189 M189 56 L206 66') +
       iron('M198 44 L212 70') + rig('M212 40 V72')
+    ),
+
+    // ---- coice de gluteo: 4 apoios, joelho no chao -> perna estendida pra cima e pra tras ----
+    "coice": svg(
+      head(30, 50) + body('M36 56 L74 74') +
+      body('M36 56 L36 100') +
+      body('M74 74 L72 100 L60 104') +
+      head(145, 50) + body('M151 56 L189 74') +
+      body('M151 56 L151 100') +
+      body('M189 74 L207 60 L216 52')
     ),
 
     // ---- encolhimento: ombros neutros -> ombros na altura da orelha ----
