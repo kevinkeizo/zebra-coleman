@@ -379,6 +379,60 @@
   }
   .load-hint.up{color:var(--gold);}
 
+  /* ---------- selo de recorde ---------- */
+  .ex-pr{
+    display:none;align-items:center;gap:.3rem;margin-left:.4rem;
+    padding:.05rem .4rem;background:var(--gold);color:var(--stone-900);
+    font-family:var(--sign);font-size:.62rem;font-weight:700;letter-spacing:.08em;
+  }
+  .ex-pr.show{display:inline-flex;}
+  .ex-pr .icon{width:.85em;height:.85em;}
+
+  /* ---------- 1RM na tira de ações ---------- */
+  .ex-1rm{
+    align-self:center;font-family:var(--sign);font-size:.68rem;
+    letter-spacing:.06em;color:var(--stone-600);white-space:nowrap;
+  }
+  .ex-1rm b{color:var(--bone-dim);font-weight:700;}
+
+  /* ---------- histórico + gráfico no modal ---------- */
+  .modal-history{margin-top:1.1rem;padding-top:1rem;border-top:var(--rule);}
+  .modal-history h3{
+    margin:0 0 .6rem;font-family:var(--sign);font-size:.7rem;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--bone-dim);
+  }
+  .modal-chart{width:100%;height:64px;display:block;margin-bottom:.7rem;}
+  .modal-log{list-style:none;margin:0;padding:0;display:grid;gap:.3rem;}
+  .modal-log li{
+    display:flex;justify-content:space-between;gap:1rem;
+    font-family:var(--sign);font-size:.78rem;color:var(--bone-dim);
+    padding:.3rem 0;border-bottom:1px solid rgba(58,57,54,.5);
+  }
+  .modal-log li:last-child{border-bottom:0;}
+  .modal-log b{color:var(--gold);font-weight:700;}
+  .modal-log .pr{color:var(--gold-hot);}
+  .modal-empty{font-family:var(--sign);font-size:.78rem;color:var(--stone-600);}
+
+  /* ---------- lembrete de treino ---------- */
+  .nudge{
+    display:none;max-width:1080px;margin:0 auto;padding:0 1.25rem;
+  }
+  .nudge.show{display:block;}
+  .nudge-box{
+    display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;
+    border:1px solid var(--velvet-hot);background:rgba(224,39,28,.1);
+    padding:.75rem 1rem;margin-top:1rem;
+    font-family:var(--sign);font-size:.8rem;color:var(--bone);
+  }
+  .nudge-box .icon{color:var(--velvet-hot);flex:none;}
+  .nudge-box b{color:var(--gold);}
+
+  /* ---------- comparação semanal ---------- */
+  .stat.wk b{font-size:1.5rem;}
+  .stat-delta{font-family:var(--sign);font-size:.66rem;letter-spacing:.06em;}
+  .stat-delta.up{color:var(--gold);}
+  .stat-delta.down{color:var(--bone-dim);}
+
   /* ---------- calendário ---------- */
   .cal-section{max-width:1080px;margin:0 auto;padding:2.5rem 1.25rem 0;}
   .cal-top{
@@ -676,6 +730,7 @@
 </section>
 
 <nav class="tabs" id="tabs" aria-label="Dias da semana"></nav>
+<div class="nudge" id="nudge"><div class="nudge-box"></div></div>
 <main class="wrap" id="panels"></main>
 
 <section class="cal-section" aria-label="Calendário de treinos">
@@ -698,6 +753,7 @@
       <div class="stat"><b id="stat-streak">0</b><span id="stat-streak-unit">dias seguidos</span></div>
       <div class="stat"><b id="stat-month">0</b><span>treinos no mês</span></div>
       <div class="stat"><b id="stat-load">0</b><span>kg somados no mês</span></div>
+      <div class="stat wk"><b id="stat-week">0</b><span>kg essa semana</span><div class="stat-delta" id="stat-week-delta"></div></div>
     </div>
   </div>
 </section>
@@ -733,6 +789,10 @@
         <svg class="icon"><use href="#i-external"/></svg>
         Abrir no YouTube
       </a>
+      <div class="modal-history">
+        <h3>Progressão de carga</h3>
+        <div id="modal-history-body"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -1086,6 +1146,30 @@
 
   const lastLoad = (dayId, ei) => (db.loads[dayId] || {})[ei];
 
+  /* histórico completo de carga de um exercício, ordenado por data */
+  function historyFor(dayId, ei){
+    return Object.keys(db.log)
+      .sort()
+      .map(date => {
+        const s = db.log[date][dayId];
+        const v = s && s.loads ? s.loads[ei] : undefined;
+        return v === undefined ? null : { date, load: v };
+      })
+      .filter(Boolean);
+  }
+
+  function bestLoad(dayId, ei, beforeDate){
+    const h = historyFor(dayId, ei).filter(p => !beforeDate || p.date < beforeDate);
+    return h.length ? Math.max(...h.map(p => p.load)) : undefined;
+  }
+
+  /* estima 1RM pela fórmula de Epley usando o topo da faixa de reps do exercício (ex: "4 x 8-10" -> 10) */
+  function estimate1RM(load, meta){
+    const m = meta.match(/(d+)(?:-(d+))?s*$/);
+    const reps = m ? Number(m[2] || m[1]) : 10;
+    return load * (1 + reps / 30);
+  }
+
   /* ---------- barra de anilhas ---------- */
   const barbellEl = document.getElementById('barbell');
   const HEIGHTS = ['h56','h48','h40','h48','h40'];
@@ -1134,7 +1218,7 @@
         <div class="ex-index">${ei + 1}</div>
         <button class="ex-thumb" aria-label="Ver execução de ${ex.name}">${figFor(ex)}</button>
         <div class="ex-body">
-          <h3 class="ex-name">${ex.name}</h3>
+          <h3 class="ex-name">${ex.name}<span class="ex-pr">${icon('i-bolt','solid')} recorde</span></h3>
           <div class="ex-meta">${icon('i-dumbbell')} ${ex.meta} <span class="ex-target">${ex.target}</span></div>
           <p class="ex-note">${ex.note}</p>
           <div class="ex-actions">
@@ -1146,6 +1230,7 @@
               <span class="load-unit">kg</span>
             </label>
             <span class="load-hint"></span>
+            <span class="ex-1rm"></span>
           </div>
         </div>`;
 
@@ -1204,6 +1289,15 @@
       hint.className = 'load-hint';
       hint.textContent = '';
     }
+
+    const ex = DATA.find(d => d.id === dayId).exercises[ei];
+    const current = today !== undefined ? today : prev;
+    const rm = card.querySelector('.ex-1rm');
+    rm.textContent = current ? `~${kg(Math.round(estimate1RM(current, ex.meta) * 10) / 10)} kg em 1RM` : '';
+
+    const best = bestLoad(dayId, ei, TODAY);
+    const pr = card.querySelector('.ex-pr');
+    pr.classList.toggle('show', today !== undefined && (best === undefined || today >= best));
   }
 
   function toggleExercise(dayId, ei){
@@ -1326,6 +1420,54 @@
       });
     });
     document.getElementById('stat-load').textContent = vol ? kg(Math.round(vol)) : '0';
+
+    // semana atual (segunda a domingo) vs semana anterior, pra ver se o ritmo subiu
+    const weekVolume = (offset) => {
+      const ref = new Date();
+      const dow = (ref.getDay() + 6) % 7; // segunda = 0
+      ref.setDate(ref.getDate() - dow - offset * 7);
+      let total = 0;
+      for (let i = 0; i < 7; i++){
+        const k = keyOf(ref);
+        const rec = db.log[k];
+        if (rec) Object.keys(rec).forEach(id => {
+          const loads = rec[id].loads || {};
+          Object.keys(loads).forEach(x => { total += Number(loads[x]) || 0; });
+        });
+        ref.setDate(ref.getDate() + 1);
+      }
+      return total;
+    };
+    const thisWeek = weekVolume(0), lastWeek = weekVolume(1);
+    document.getElementById('stat-week').textContent = thisWeek ? kg(Math.round(thisWeek)) : '0';
+    const delta = document.getElementById('stat-week-delta');
+    if (lastWeek > 0){
+      const pct = Math.round(((thisWeek - lastWeek) / lastWeek) * 100);
+      delta.className = 'stat-delta ' + (pct >= 0 ? 'up' : 'down');
+      delta.textContent = (pct >= 0 ? '+' : '') + pct + '% vs semana passada';
+    } else {
+      delta.className = 'stat-delta';
+      delta.textContent = thisWeek ? 'primeira semana registrada' : '';
+    }
+
+    renderNudge();
+  }
+
+  function renderNudge(){
+    const el = document.getElementById('nudge');
+    const box = el.querySelector('.nudge-box');
+    const dates = Object.keys(db.log).filter(k => {
+      const rec = db.log[k];
+      return Object.keys(rec).some(id => (rec[id].done || []).length > 0);
+    }).sort();
+    if (!dates.length){ el.classList.remove('show'); return; }
+
+    const last = parseKey(dates[dates.length - 1]);
+    const days = Math.round((parseKey(TODAY) - last) / 86400000);
+    if (days < 2){ el.classList.remove('show'); return; }
+
+    box.innerHTML = `${icon('i-bolt', 'solid')} <span><b>${days} dias sem treinar.</b> A barra não carrega sozinha — bora fechar o dia de hoje.</span>`;
+    el.classList.add('show');
   }
 
   document.getElementById('cal-prev').addEventListener('click', () => { view.setMonth(view.getMonth() - 1); renderCalendar(); });
@@ -1346,6 +1488,7 @@
     document.getElementById('modal-note').textContent = ex.note;
     document.getElementById('modal-figure').innerHTML = figFor(ex);
     document.getElementById('modal-link').href = ex.url;
+    renderHistory(dayId, ei, ex);
 
     // file:// bloqueia o embed do YouTube (origin nula): ali o play manda
     // direto pro site em vez de mostrar um player quebrado.
@@ -1367,6 +1510,38 @@
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     document.getElementById('modal-close').focus();
+  }
+
+  function renderHistory(dayId, ei, ex){
+    const body = document.getElementById('modal-history-body');
+    const hist = historyFor(dayId, ei);
+    if (!hist.length){
+      body.innerHTML = '<p class="modal-empty">Ainda sem carga registrada. A primeira marcação já entra pro gráfico.</p>';
+      return;
+    }
+
+    const pts = hist.slice(-10);
+    const W = 280, H = 64, pd = 6;
+    const min = Math.min(...pts.map(p => p.load)), max = Math.max(...pts.map(p => p.load));
+    const span = max - min || 1;
+    const xy = (p, i) => {
+      const x = pts.length > 1 ? pd + (i / (pts.length - 1)) * (W - pd * 2) : W / 2;
+      const y = H - pd - ((p.load - min) / span) * (H - pd * 2);
+      return [x, y];
+    };
+    const coords = pts.map(xy);
+    const line = coords.map(c => c.join(',')).join(' ');
+    const dots = coords.map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${i === coords.length - 1 ? 4 : 2.5}" fill="${i === coords.length - 1 ? '#f0c64a' : '#d6a419'}"/>`).join('');
+    const chart = `<svg class="modal-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Gráfico de progressão de carga"><polyline points="${line}" fill="none" stroke="#d6a419" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${dots}</svg>`;
+
+    const rows = hist.slice(-6).reverse().map((p, i, arr) => {
+      const isPR = p.load === Math.max(...hist.map(x => x.load));
+      const d = parseKey(p.date);
+      const label = `${pad(d.getDate())}/${pad(d.getMonth() + 1)}`;
+      return `<li><span>${label}</span><b class="${isPR ? 'pr' : ''}">${kg(p.load)} kg${isPR ? ' 🏆' : ''}</b></li>`;
+    }).join('');
+
+    body.innerHTML = chart + `<ul class="modal-log">${rows}</ul>`;
   }
 
   function closeModal(){
