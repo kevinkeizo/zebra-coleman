@@ -9,25 +9,29 @@ Live Server do VS Code** — em `file://` o YouTube bloqueia o player embutido, 
 o botão de play abre o vídeo numa aba nova em vez de tocar dentro do modal.
 
 ## O programa
-5 dias, 3 exercícios por dia, split upper/lower alternado com sexta de ombro e braço.
-Faixa principal de 8-12 reps, 4-5 séries nos compostos, 1-2 reps na reserva na última série.
+5 dias, 4 exercícios por dia, split upper/lower alternado com sexta de ombro e braço.
+Faixa principal de 8-12 reps, 4-5 séries nos compostos, 1-2 reps na reserva na última
+série. Os 5 exercícios extras (um por dia) são todos de isolamento — cadeira extensora,
+elevação pélvica, tríceps kickback, encolhimento e elevação frontal — de baixa exigência
+técnica, pra fechar volume sem virar treino complexo.
 
 Volume semanal calibrado pelos landmarks MEV/MAV (Renaissance Periodization):
 
-| Músculo     | Séries/semana | MEV |
-|-------------|---------------|-----|
-| Peito       | 8             | 8   |
-| Costas      | 10            | 10  |
-| Ombro       | 8             | 8   |
-| Quadríceps  | 9             | 8   |
-| Posterior   | 8             | 6   |
-| Bíceps      | 8             | 8   |
-| Tríceps     | 8             | 6   |
-| Panturrilha | 8             | 8   |
+| Músculo     | Séries/semana | MEV | MAV   | Situação |
+|-------------|---------------|-----|-------|----------|
+| Peito       | 8             | 8   | 12-20 | no MEV |
+| Costas      | 10            | 10  | 14-22 | no MEV |
+| Ombro       | 11            | 8   | 16-22 | acima do MEV |
+| Quadríceps  | 12            | 8   | 12-18 | **no MAV** |
+| Posterior   | 11            | 6   | 10-16 | **no MAV** |
+| Bíceps      | 8             | 8   | 14-20 | no MEV |
+| Tríceps     | 11            | 6   | 10-14 | **no MAV** |
+| Panturrilha | 8             | 8   | 12-16 | no MEV |
 
-Com 15 exercícios a semana fecha exatamente no MEV — o mínimo pra crescer.
-Progressão vem da carga, não de mais exercício. Se um dia quiser acelerar,
-o caminho é somar séries aos exercícios que já existem, não abrir slots novos.
+82 séries/semana no total (era 63 com 3 por dia). Quadríceps, posterior e tríceps
+saíram do piso mínimo e entraram na faixa ótima de crescimento; o resto segue no MEV,
+sem nenhum grupo abaixo do mínimo. Progressão continua vindo principalmente da carga —
+o campo de kg é o que decide se o volume de hoje ainda serve amanhã.
 
 Referência: `.claude/skills/hypertrophy-training/` (meta-análises com PMID).
 
