@@ -859,9 +859,9 @@
       title: "Upper A — Peito / Costas / Ombro",
       focus: "os três grandes de cima",
       exercises: [
-        { name: "Supino com halteres", fig: "supino", meta: "4 x 8-10", target: "Peito", note: "Halteres dão mais amplitude que a barra. Desce até sentir o peito alongar, sobe sem travar o cotovelo. Última série a 1-2 reps da falha.", url: "https://www.youtube.com/watch?v=tDxKGeY-hjQ" },
-        { name: "Remada curvada", fig: "remada", meta: "5 x 8-10", target: "Costas", note: "Cinco séries porque é metade do volume semanal de costas. Tronco ~45°, puxa até a barriga, aperta as escápulas. Arredondou a lombar, tira peso.", url: "https://www.youtube.com/watch?v=5JJPn3yBDFw" },
-        { name: "Desenvolvimento com halteres", fig: "desenvolvimento", meta: "4 x 10", target: "Ombro", note: "Sentado com encosto. Empurra pra cima sem arquear a lombar, desce até a altura da orelha.", url: "https://www.youtube.com/watch?v=eufDL9MmF8A" },
+        { name: "Supino máquina", fig: "supino-maquina", meta: "4 x 8-10", target: "Peito", note: "Ajusta o banco pra pegador na altura do peito. Empurra até quase travar o cotovelo, sem tirar as costas do encosto. Última série a 1-2 reps da falha.", url: "https://www.youtube.com/watch?v=Qu7-ceCvq7w" },
+        { name: "Remada máquina sentada", fig: "remada-maquina", meta: "5 x 8-10", target: "Costas", note: "Cinco séries porque é metade do volume semanal de costas. Peito apoiado, puxa o pegador até a barriga, aperta as escápulas no fim. Sem impulso de tronco.", url: "https://www.youtube.com/watch?v=Sq7rWvJtzDY" },
+        { name: "Desenvolvimento máquina", fig: "desenvolvimento-maquina", meta: "4 x 10", target: "Ombro", note: "Sentado com encosto, pegador na altura do ombro. Empurra pra cima sem arquear a lombar, desce controlado até a altura da orelha.", url: "https://www.youtube.com/watch?v=6v4nrRVySj0" },
         { name: "Tríceps coice (kickback)", fig: "kickback", meta: "3 x 12-15", target: "Tríceps", note: "Tronco inclinado à frente, cotovelo fixo colado ao corpo e dobrado a 90°. Estica o braço pra trás até travar, sem balançar o ombro. Movimento simples, carga leve.", url: "https://www.youtube.com/watch?v=3Bv1n7-DN7c" }
       ]
     },
@@ -886,7 +886,7 @@
       focus: "puxar pesado",
       exercises: [
         { name: "Puxada frente (ou barra assistida)", fig: "puxada", meta: "5 x 8-10", target: "Costas", note: "Pega pouco mais aberta que os ombros. Puxa até perto do peito, deixa subir até esticar o braço — amplitude cheia.", url: "https://www.youtube.com/watch?v=EswwaKw_MHw" },
-        { name: "Paralelas (mergulho)", fig: "paralelas", meta: "4 x 8-10", target: "Peito + Tríceps", note: "Tronco inclinado à frente pega mais peito, tronco reto pega mais tríceps. Desce até o ombro na linha do cotovelo. Sem barra? Faz no banco com os pés no chão.", url: "https://www.youtube.com/watch?v=yN6Q1UI_xkE" },
+        { name: "Peck deck (crucifixo máquina)", fig: "peck-deck", meta: "4 x 12", target: "Peito", note: "Sentado, cotovelo levemente dobrado e travado nessa posição. Fecha os braços à frente do peito sem soltar de golpe na volta — a fase de descida é onde o peito mais trabalha.", url: "https://www.youtube.com/watch?v=MENdoLpyj7c" },
         { name: "Rosca inclinada no banco", fig: "rosca-inclinada", meta: "4 x 12", target: "Bíceps", note: "Banco a 45°, braço caindo atrás do corpo. É a rosca que mais alonga o bíceps — e por isso a que mais rende.", url: "https://www.youtube.com/watch?v=soxrZlIl35U" },
         { name: "Encolhimento com halteres", fig: "encolhimento", meta: "3 x 15", target: "Trapézio", note: "Halteres ao lado do corpo, sobe os ombros em direção à orelha sem girar, segura 1 segundo em cima. Movimento simples, reforça o trapézio que sustenta a remada e a puxada.", url: "https://www.youtube.com/watch?v=rFsSeClGnNA" }
       ]
@@ -1157,6 +1157,50 @@
       head(175, 28) + body('M175 38 V72 M175 72 L169 90 L169 108 M175 72 L181 90 L181 108') +
       body('M165 40 L165 68') + dumbbell(165, 72) +
       body('M185 40 L185 68') + dumbbell(185, 72)
+    ),
+
+    // ---- supino maquina: pegador no peito -> braco esticado a frente ----
+    "supino-maquina": svg(
+      rig('M16 32 V102 M16 102 H50') +
+      head(36, 42) + body('M36 50 V82 M36 82 L30 102 M36 82 L42 102') +
+      body('M36 60 L52 60') + iron('M52 54 V66') +
+      rig('M131 32 V102 M131 102 H165') +
+      head(151, 42) + body('M151 50 V82 M151 82 L145 102 M151 82 L157 102') +
+      body('M151 60 L179 60') + iron('M179 54 V66')
+    ),
+
+    // ---- remada maquina: braco esticado a frente -> cotovelo puxado atras do tronco ----
+    "remada-maquina": svg(
+      rig('M18 32 V102 M18 102 H36') +
+      head(30, 42) + body('M30 50 V82 M30 82 L24 102 M30 82 L36 102') +
+      body('M30 60 L58 60') + iron('M58 52 V68') +
+      rig('M133 32 V102 M133 102 H151') +
+      head(157, 42) + body('M157 50 V82 M157 82 L151 102 M157 82 L163 102') +
+      body('M157 60 L133 60') + iron('M119 52 V68')
+    ),
+
+    // ---- desenvolvimento maquina: pegador na altura do ombro -> empurrado pra cima ----
+    "desenvolvimento-maquina": svg(
+      rig('M18 12 H98 M40 12 V38') + iron('M40 38 V56') +
+      rig('M22 56 V102 M22 102 H58') +
+      head(40, 66) + body('M40 74 V96 M40 96 L34 108 M40 96 L46 108') +
+      body('M40 78 L54 78') + iron('M54 72 V84') +
+      rig('M133 12 H213 M155 12 V22') + iron('M155 22 V44') +
+      rig('M137 56 V102 M137 102 H173') +
+      head(155, 56) + body('M155 64 V96 M155 96 L149 108 M155 96 L161 108') +
+      body('M155 64 L169 44') + iron('M169 38 V50')
+    ),
+
+    // ---- peck deck: bracos abertos segurando o apoio -> bracos juntos a frente do peito ----
+    "peck-deck": svg(
+      rig('M18 30 V102 M18 102 H58') +
+      head(38, 40) + body('M38 48 V80 M38 80 L32 102 M38 80 L44 102') +
+      body('M38 58 L18 50') + iron('M14 44 V58') +
+      body('M38 58 L58 50') + iron('M62 44 V58') +
+      rig('M133 30 V102 M133 102 H173') +
+      head(153, 40) + body('M153 48 V80 M153 80 L147 102 M153 80 L159 102') +
+      body('M153 58 L143 66') + iron('M139 62 V76') +
+      body('M153 58 L163 66') + iron('M167 62 V76')
     ),
 
     // ---- elevacao frontal: halter na coxa -> braco na altura do ombro, a frente ----
