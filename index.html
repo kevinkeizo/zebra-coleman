@@ -351,6 +351,14 @@
   .backup-note.ok{color:var(--gold);}
   .backup-note.err{color:var(--velvet-hot);}
 
+  .sync-note{
+    display:inline-flex;align-items:center;gap:.4rem;margin-left:.5rem;
+    font-family:var(--sign);font-size:.68rem;letter-spacing:.06em;color:var(--stone-600);
+  }
+  .sync-note.ok{color:var(--gold);}
+  .sync-note.err{color:var(--velvet-hot);}
+  .sync-note .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none;}
+
   .coach{
     margin-top:1.75rem;padding:1.35rem 1.5rem;
     border:var(--rule);border-top:3px solid var(--velvet);
@@ -755,7 +763,10 @@
 
 <section class="cal-section" aria-label="Calendário de treinos">
   <div class="cal-top">
-    <h2>Diário de bordo</h2>
+    <div style="display:flex;align-items:center;flex-wrap:wrap;">
+      <h2>Diário de bordo</h2>
+      <span class="sync-note" id="sync-note"><span class="dot"></span><span id="sync-text">conectando…</span></span>
+    </div>
     <div class="cal-nav">
       <button id="cal-prev" aria-label="Mês anterior">‹</button>
       <span id="cal-title"></span>
@@ -1217,6 +1228,64 @@
   const db = loadDB();
   const TODAY = keyOf(new Date());
 
+  /* =========================================================
+     SUPABASE — banco remoto. anon/publishable key: feita pra
+     ficar exposta no navegador, a segurança vem da RLS policy
+     lá no banco, não do sigilo dessa chave.
+     ========================================================= */
+  const SB_URL = 'https://zwgvoqlzacdirtmjboda.supabase.co';
+  const SB_KEY = 'sb_publishable_OuIaJssQWTc4eUYvYM1NqA_J89YXmr9';
+  const SB_HEADERS = { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY };
+
+  function setSyncNote(text, cls){
+    const note = document.getElementById('sync-note');
+    const txt = document.getElementById('sync-text');
+    if (!note || !txt) return;
+    txt.textContent = text;
+    note.className = 'sync-note' + (cls ? ' ' + cls : '');
+  }
+
+  // manda uma marcação/carga pro banco. falha em silêncio se estiver offline —
+  // o dado já tá salvo no localStorage, a nuvem é bônus, não depende dela pra funcionar.
+  function pushRow(dateKey, dayId, ei, done, load){
+    const day = DATA.find(d => d.id === dayId);
+    const ex = day && day.exercises[ei];
+    if (!ex) return;
+    fetch(SB_URL + '/rest/v1/workout_log?on_conflict=date,day_id,exercise_index', {
+      method: 'POST',
+      headers: { ...SB_HEADERS, 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=minimal' },
+      body: JSON.stringify([{ date: dateKey, day_id: dayId, exercise_index: ei, exercise_name: ex.name, load_kg: load === undefined ? null : load, done: !!done }])
+    }).then(r => setSyncNote(r.ok ? 'sincronizado' : 'falha ao sincronizar', r.ok ? 'ok' : 'err'))
+      .catch(() => setSyncNote('offline — salvo só neste aparelho', 'err'));
+  }
+
+  // busca tudo do banco no carregamento. local sempre vence em caso de
+  // conflito — a nuvem só preenche o que este aparelho ainda não tem,
+  // pra puxar histórico de outro celular/PC sem sobrescrever nada daqui.
+  function pullRemote(){
+    fetch(SB_URL + '/rest/v1/workout_log?select=date,day_id,exercise_index,load_kg,done', { headers: SB_HEADERS })
+      .then(r => { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+      .then(rows => {
+        rows.forEach(row => {
+          const { date, day_id, exercise_index: ei, load_kg, done } = row;
+          db.log[date] = db.log[date] || {};
+          const sess = db.log[date][day_id] = db.log[date][day_id] || { done: [], loads: {} };
+          if (done && !sess.done.includes(ei)) { sess.done = [...sess.done, ei].sort((a, b) => a - b); }
+          if (load_kg !== null && sess.loads[ei] === undefined) sess.loads[ei] = Number(load_kg);
+          if (load_kg !== null){
+            db.loads[day_id] = db.loads[day_id] || {};
+            if (db.loads[day_id][ei] === undefined) db.loads[day_id][ei] = Number(load_kg);
+          }
+        });
+        saveDB();
+        const activeTab = document.querySelector('.tab.active');
+        if (activeTab) selectDay(activeTab.dataset.day);
+        renderCalendar();
+        setSyncNote('sincronizado', 'ok');
+      })
+      .catch(() => setSyncNote('offline — usando só o que tá salvo aqui', 'err'));
+  }
+
   function session(dateKey, dayId, make){
     const day = db.log[dateKey];
     if (!day) { if (!make) return null; db.log[dateKey] = {}; }
@@ -1232,11 +1301,13 @@
     const set = new Set(s.done);
     on ? set.add(ei) : set.delete(ei);
     s.done = [...set].sort((a, b) => a - b);
+    const load = s.loads ? s.loads[ei] : undefined;
     if (!s.done.length && !Object.keys(s.loads || {}).length){
       delete db.log[TODAY][dayId];
       if (!Object.keys(db.log[TODAY]).length) delete db.log[TODAY];
     }
     saveDB();
+    pushRow(TODAY, dayId, ei, on, load);
   }
 
   function setLoad(dayId, ei, value){
@@ -1252,6 +1323,8 @@
       db.loads[dayId][ei] = value;
     }
     saveDB();
+    const on = doneSet(dayId).has(ei);
+    pushRow(TODAY, dayId, ei, on, value === null ? undefined : value);
   }
 
   const lastLoad = (dayId, ei) => (db.loads[dayId] || {})[ei];
@@ -1721,6 +1794,7 @@
 
   renderCalendar();
   selectDay(DATA[todayIndex()].id);
+  pullRemote();
 </script>
 
 </body>
