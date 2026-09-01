@@ -381,31 +381,49 @@
   }
   .ex.done .ex-target{border-color:var(--gold);color:var(--gold);}
 
-  .load{
+  /* ---------- blocos de série: um input curto por série ---------- */
+  .blocks-row{
+    display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;
+    margin-top:.6rem;
+  }
+  .blocks{display:flex;flex-wrap:wrap;gap:.35rem;}
+  .block{
     display:inline-flex;align-items:center;
     border:1px solid var(--stone-600);
-    transition:border-color 160ms ease;
+    transition:border-color 160ms ease,transform 140ms var(--ease-out);
   }
-  .load:focus-within{border-color:var(--gold);}
-  .load-input{
-    width:4.2rem;background:transparent;border:0;outline:none;
-    padding:.5rem .2rem .5rem .6rem;
-    font-family:var(--sign);font-size:.9rem;font-weight:700;color:var(--gold);
-    text-align:right;
+  .block:focus-within{border-color:var(--gold);}
+  .block-input{
+    width:3.2rem;background:transparent;border:0;outline:none;
+    padding:.45rem .5rem;
+    font-family:var(--sign);font-size:.85rem;font-weight:700;color:var(--gold);
+    text-align:center;
   }
-  .load-input::placeholder{color:var(--stone-600);font-weight:500;}
-  .load-input::-webkit-outer-spin-button,
-  .load-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
-  .load-input[type=number]{-moz-appearance:textfield;}
-  .load-unit{
-    padding:.5rem .6rem .5rem .15rem;
-    font-family:var(--sign);font-size:.72rem;color:var(--bone-dim);
+  .block-input::placeholder{color:var(--stone-600);font-weight:500;}
+  .block-input::-webkit-outer-spin-button,
+  .block-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .block-input[type=number]{-moz-appearance:textfield;}
+  .block-add{
+    width:2.15rem;height:2.15rem;display:grid;place-items:center;cursor:pointer;
+    background:none;border:1px dashed var(--stone-600);color:var(--bone-dim);
+    font-family:var(--sign);font-size:1rem;font-weight:700;line-height:1;
+    transition:transform 140ms var(--ease-out),color 160ms ease,border-color 160ms ease;
+  }
+  .block-add:hover{color:var(--gold);border-color:var(--gold);}
+  .block-add:active{transform:scale(.9);}
+  .blocks-unit{
+    font-family:var(--sign);font-size:.68rem;color:var(--bone-dim);
   }
   .load-hint{
-    align-self:center;font-family:var(--sign);font-size:.7rem;
+    display:block;margin-top:.35rem;font-family:var(--sign);font-size:.7rem;
     letter-spacing:.08em;color:var(--stone-600);
   }
   .load-hint.up{color:var(--gold);}
+
+  /* ---------- melhor de sempre, fixo no card (não só quando bate o recorde hoje) ---------- */
+  .ex-best{
+    font-family:var(--sign);font-size:.66rem;letter-spacing:.06em;color:var(--gold);
+  }
 
   /* ---------- selo de recorde ---------- */
   .ex-pr{
@@ -646,9 +664,9 @@
     .btn{min-height:44px;padding:.6rem .85rem;}
     .ex-actions{gap:.4rem;}
     .ex-actions .btn{flex:1 1 calc(50% - .25rem);justify-content:center;}
-    .load{flex:1 1 8rem;min-height:44px;}
-    .load-input{font-size:16px;flex:1;text-align:center;}  /* 16px evita o zoom do iOS */
-    .load-hint{flex:1 1 100%;text-align:right;}
+    .block{min-height:44px;}
+    .block-input{font-size:16px;width:2.9rem;}  /* 16px evita o zoom do iOS */
+    .block-add{min-height:44px;width:2.6rem;}
     .reset-btn{min-height:44px;}
 
     .rack{padding-top:1rem;}
@@ -873,7 +891,7 @@
       focus: "agachar e dobrar o quadril",
       exercises: [
         { name: "Agachamento (livre ou goblet)", fig: "agachamento", meta: "5 x 8-10", target: "Quadríceps", note: "Pés na largura do ombro, desce até a coxa passar da paralela, joelho seguindo a linha do pé. Sobe empurrando o chão.", url: "https://www.youtube.com/watch?v=ge1vdJRP0UA" },
-        { name: "Stiff ou levantamento terra romeno", fig: "stiff", meta: "4 x 8-10", target: "Posterior", note: "Joelho quase reto, empurra o quadril pra trás, desce até puxar o posterior. A barra desliza rente à perna, costas retas do começo ao fim.", url: "https://www.youtube.com/watch?v=JJ4SUrf-s_A" },
+        { name: "Cadeira adutora", fig: "adutora", meta: "4 x 12-15", target: "Adutores", note: "Sentado, pernas abertas contra o apoio. Fecha as pernas contra a resistência, controla a volta sem soltar de golpe. Não é substituto do posterior de coxa — se quiser fechar esse volume, pulley entre as pernas ou banco romano fazem esse papel melhor.", url: "https://www.youtube.com/watch?v=TB4BwvHaK9o" },
         { name: "Panturrilha em pé", fig: "panturrilha", meta: "4 x 12-15", target: "Panturrilha", note: "Desce até o calcanhar passar da linha do degrau — o alongamento é o que faz crescer. Segura 1 segundo em cima.", url: "https://www.youtube.com/watch?v=a1s-U4UQkIg" },
         { name: "Cadeira abdutora", fig: "abdutora", meta: "3 x 15", target: "Glúteo", note: "Sentado, costas apoiadas, empurra as pernas pra fora contra a resistência da máquina, controla a volta sem soltar o peso. Foco na amplitude, não na velocidade.", url: "https://www.youtube.com/watch?v=S9OtoSJdMWo" }
       ]
@@ -1127,6 +1145,18 @@
       iron('M198 44 L212 70') + rig('M212 40 V72')
     ),
 
+    // ---- cadeira adutora: pernas abertas -> pernas fechando contra o apoio ----
+    "adutora": svg(
+      rig('M18 40 V92 M18 92 H58 M18 92 V108 M56 92 V108') +
+      head(38, 32) + body('M38 40 V78') +
+      body('M38 78 L26 100 M38 78 L50 100') +
+      iron('M22 84 V102') + iron('M54 84 V102') +
+      rig('M133 40 V92 M133 92 H173 M133 92 V108 M171 92 V108') +
+      head(153, 32) + body('M153 40 V78') +
+      body('M153 78 L147 100 M153 78 L159 100') +
+      iron('M133 84 V102') + iron('M173 84 V102')
+    ),
+
     // ---- cadeira abdutora: pernas juntas -> pernas abertas contra o apoio ----
     "abdutora": svg(
       rig('M18 40 V92 M18 92 H58 M18 92 V108 M56 92 V108') +
@@ -1237,31 +1267,56 @@
      log:   { "2026-08-24": { seg: { done:[0,2], loads:{0:22.5} } } }
      loads: { seg: { 0: 22.5 } }   última carga usada em cada exercício
      ========================================================= */
-  const STORE = 'zebra-coleman/v2';
+  const STORE = 'zebra-coleman/v3';
+  const V2 = 'zebra-coleman/v2';
   const LEGACY = 'zebra-coleman/v1';
 
-  function blankDB(){ return { v: 2, log: {}, loads: {} }; }
+  function blankDB(){ return { v: 3, log: {} }; }
+
+  // cada exercício guarda uma LISTA de séries agora, não um número só.
+  // formato antigo (v2) tinha um número direto — vira lista de 1 item.
+  function wrapLegacyLoads(logObj){
+    Object.keys(logObj || {}).forEach(date => {
+      Object.keys(logObj[date]).forEach(dayId => {
+        const sess = logObj[date][dayId];
+        if (!sess || !sess.loads) return;
+        Object.keys(sess.loads).forEach(ei => {
+          const v = sess.loads[ei];
+          if (typeof v === 'number') sess.loads[ei] = [v];
+        });
+      });
+    });
+  }
 
   function loadDB(){
     let db = null;
     try { db = JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) { db = null; }
-    if (!db || db.v !== 2){
+    if (!db || db.v !== 3){
       db = blankDB();
-      // migra o checklist antigo pra data de hoje, pra ninguém perder marcação
+      // migra do v2 (carga única por exercício) — cada número vira lista de 1 série
       try {
-        const old = JSON.parse(localStorage.getItem(LEGACY) || 'null');
-        if (old){
-          const t = keyOf(new Date());
-          db.log[t] = {};
-          Object.keys(old).forEach(id => {
-            if (Array.isArray(old[id]) && old[id].length) db.log[t][id] = { done: old[id], loads: {} };
-          });
-          if (!Object.keys(db.log[t]).length) delete db.log[t];
+        const old = JSON.parse(localStorage.getItem(V2) || 'null');
+        if (old && old.log){
+          db.log = old.log;
+          wrapLegacyLoads(db.log);
         }
       } catch (e) { /* sem migração, sem drama */ }
+      // se nem v2 existir, tenta o checklist bem antigo (v1) direto pra hoje
+      if (!Object.keys(db.log).length){
+        try {
+          const older = JSON.parse(localStorage.getItem(LEGACY) || 'null');
+          if (older){
+            const t = keyOf(new Date());
+            db.log[t] = {};
+            Object.keys(older).forEach(id => {
+              if (Array.isArray(older[id]) && older[id].length) db.log[t][id] = { done: older[id], loads: {} };
+            });
+            if (!Object.keys(db.log[t]).length) delete db.log[t];
+          }
+        } catch (e) { /* sem migração, sem drama */ }
+      }
     }
     db.log = db.log || {};
-    db.loads = db.loads || {};
     return db;
   }
 
@@ -1289,36 +1344,100 @@
     note.className = 'sync-note' + (cls ? ' ' + cls : '');
   }
 
-  // manda uma marcação/carga pro banco. falha em silêncio se estiver offline —
-  // o dado já tá salvo no localStorage, a nuvem é bônus, não depende dela pra funcionar.
-  function pushRow(dateKey, dayId, ei, done, load){
+  // manda TODAS as séries de um exercício pro banco (upsert em lote, uma
+  // linha por set_number). falha em silêncio se estiver offline — o dado
+  // já tá salvo no localStorage, a nuvem é bônus, não depende dela pra
+  // funcionar. Se o array local ficou mais curto que antes (apagou uma
+  // série do fim), limpa o excesso lá no banco também.
+  //
+  // schedulePush() faz debounce por (data,dia,exercício): se o usuário
+  // preenche várias séries rápido, cada setSetWeight dispara um push
+  // próprio — sem isso, vários POST+DELETE concorrentes se cruzam na
+  // rede e o DELETE de uma chamada mais rápida apaga série que outra
+  // chamada mais lenta acabou de gravar. Só o último estado, depois de
+  // 500ms parado, é que realmente vai pro banco.
+  const pushTimers = {};
+  function schedulePush(dateKey, dayId, ei, done, arr){
+    const key = dateKey + '|' + dayId + '|' + ei;
+    clearTimeout(pushTimers[key]);
+    pushTimers[key] = setTimeout(() => {
+      delete pushTimers[key];
+      pushSets(dateKey, dayId, ei, done, arr);
+    }, 500);
+  }
+
+  function pushSets(dateKey, dayId, ei, done, arr){
     const day = DATA.find(d => d.id === dayId);
     const ex = day && day.exercises[ei];
     if (!ex) return;
-    fetch(SB_URL + '/rest/v1/workout_log?on_conflict=date,day_id,exercise_index', {
+    const clean = arr || [];
+    const rows = clean.map((w, i) => ({
+      date: dateKey, day_id: dayId, exercise_index: ei, set_number: i + 1,
+      exercise_name: ex.name, load_kg: (w === undefined || w === null) ? null : w, done: !!done
+    }));
+    if (!rows.length) rows.push({ date: dateKey, day_id: dayId, exercise_index: ei, set_number: 1, exercise_name: ex.name, load_kg: null, done: !!done });
+
+    fetch(SB_URL + '/rest/v1/workout_log?on_conflict=date,day_id,exercise_index,set_number', {
       method: 'POST',
       headers: { ...SB_HEADERS, 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=minimal' },
-      body: JSON.stringify([{ date: dateKey, day_id: dayId, exercise_index: ei, exercise_name: ex.name, load_kg: load === undefined ? null : load, done: !!done }])
-    }).then(r => setSyncNote(r.ok ? 'sincronizado' : 'falha ao sincronizar', r.ok ? 'ok' : 'err'))
-      .catch(() => setSyncNote('offline — salvo só neste aparelho', 'err'));
+      body: JSON.stringify(rows)
+    }).then(r => {
+      setSyncNote(r.ok ? 'sincronizado' : 'falha ao sincronizar', r.ok ? 'ok' : 'err');
+      if (r.ok){
+        // apaga sobra de series antigas alem do tamanho atual do array
+        fetch(SB_URL + '/rest/v1/workout_log?date=eq.' + dateKey + '&day_id=eq.' + dayId + '&exercise_index=eq.' + ei + '&set_number=gt.' + rows.length, {
+          method: 'DELETE', headers: SB_HEADERS
+        }).catch(() => {});
+      }
+    }).catch(() => setSyncNote('offline — salvo só neste aparelho', 'err'));
   }
 
-  // busca tudo do banco no carregamento. local sempre vence em caso de
-  // conflito — a nuvem só preenche o que este aparelho ainda não tem,
-  // pra puxar histórico de outro celular/PC sem sobrescrever nada daqui.
+  // se o usuário fechar a aba/trocar de app antes do debounce de 500ms
+  // disparar, o push nunca sairia — isso dispara na hora qualquer push
+  // que ainda tava esperando, pra não perder a última série digitada.
+  function flushPendingPushes(){
+    Object.keys(pushTimers).forEach(key => {
+      clearTimeout(pushTimers[key]);
+      delete pushTimers[key];
+      const [dateKey, dayId, eiStr] = key.split('|');
+      const ei = Number(eiStr);
+      const s = session(dateKey, dayId);
+      const arr = (s && s.loads && s.loads[ei]) || [];
+      const done = s ? new Set(s.done).has(ei) : false;
+      pushSets(dateKey, dayId, ei, done, arr);
+    });
+  }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushPendingPushes(); });
+  window.addEventListener('pagehide', flushPendingPushes);
+
+  // busca tudo do banco no carregamento, agrupando as linhas de volta em
+  // arrays de série por (data, dia, exercício). local sempre vence em
+  // conflito, célula a célula — a nuvem só preenche o que este aparelho
+  // ainda não tem, pra puxar histórico de outro celular/PC sem
+  // sobrescrever nada daqui.
   function pullRemote(){
-    fetch(SB_URL + '/rest/v1/workout_log?select=date,day_id,exercise_index,load_kg,done', { headers: SB_HEADERS })
+    fetch(SB_URL + '/rest/v1/workout_log?select=date,day_id,exercise_index,set_number,load_kg,done', { headers: SB_HEADERS })
       .then(r => { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
       .then(rows => {
+        const grouped = {};
         rows.forEach(row => {
-          const { date, day_id, exercise_index: ei, load_kg, done } = row;
+          const key = row.date + '|' + row.day_id + '|' + row.exercise_index;
+          const g = grouped[key] = grouped[key] || { done: false, sets: {} };
+          if (row.done) g.done = true;
+          if (row.load_kg !== null) g.sets[row.set_number] = Number(row.load_kg);
+        });
+        Object.keys(grouped).forEach(key => {
+          const [date, day_id, eiStr] = key.split('|');
+          const ei = Number(eiStr);
+          const g = grouped[key];
           db.log[date] = db.log[date] || {};
           const sess = db.log[date][day_id] = db.log[date][day_id] || { done: [], loads: {} };
-          if (done && !sess.done.includes(ei)) { sess.done = [...sess.done, ei].sort((a, b) => a - b); }
-          if (load_kg !== null && sess.loads[ei] === undefined) sess.loads[ei] = Number(load_kg);
-          if (load_kg !== null){
-            db.loads[day_id] = db.loads[day_id] || {};
-            if (db.loads[day_id][ei] === undefined) db.loads[day_id][ei] = Number(load_kg);
+          if (g.done && !sess.done.includes(ei)) sess.done = [...sess.done, ei].sort((a, b) => a - b);
+          if (sess.loads[ei] === undefined){
+            const maxSet = Math.max(0, ...Object.keys(g.sets).map(Number));
+            const arr = [];
+            for (let i = 1; i <= maxSet; i++) if (g.sets[i] !== undefined) arr[i - 1] = g.sets[i];
+            if (arr.length) sess.loads[ei] = arr;
           }
         });
         saveDB();
@@ -1345,54 +1464,63 @@
     const set = new Set(s.done);
     on ? set.add(ei) : set.delete(ei);
     s.done = [...set].sort((a, b) => a - b);
-    const load = s.loads ? s.loads[ei] : undefined;
+    const arr = (s.loads && s.loads[ei]) || [];
     if (!s.done.length && !Object.keys(s.loads || {}).length){
       delete db.log[TODAY][dayId];
       if (!Object.keys(db.log[TODAY]).length) delete db.log[TODAY];
     }
     saveDB();
-    pushRow(TODAY, dayId, ei, on, load);
+    schedulePush(TODAY, dayId, ei, on, arr);
   }
 
-  function setLoad(dayId, ei, value){
-    if (value === null){
-      const s = session(TODAY, dayId);
-      if (s && s.loads) delete s.loads[ei];
-      if (db.loads[dayId]) delete db.loads[dayId][ei];
-    } else {
-      const s = session(TODAY, dayId, true);
-      s.loads = s.loads || {};
-      s.loads[ei] = value;
-      db.loads[dayId] = db.loads[dayId] || {};
-      db.loads[dayId][ei] = value;
+  // grava o peso de UMA série (setIdx é 0-based). value === null apaga essa série.
+  function setSetWeight(dayId, ei, setIdx, value){
+    const s = session(TODAY, dayId, true);
+    s.loads = s.loads || {};
+    const arr = (s.loads[ei] || []).slice();
+    arr[setIdx] = value === null ? undefined : value;
+    while (arr.length && arr[arr.length - 1] === undefined) arr.pop();
+    if (arr.length) s.loads[ei] = arr; else delete s.loads[ei];
+    if (!s.done.length && !Object.keys(s.loads).length){
+      delete db.log[TODAY][dayId];
+      if (!Object.keys(db.log[TODAY]).length) delete db.log[TODAY];
     }
     saveDB();
     const on = doneSet(dayId).has(ei);
-    pushRow(TODAY, dayId, ei, on, value === null ? undefined : value);
+    schedulePush(TODAY, dayId, ei, on, s.loads ? (s.loads[ei] || []) : []);
   }
 
-  const lastLoad = (dayId, ei) => (db.loads[dayId] || {})[ei];
+  const definedVals = (arr) => (arr || []).filter(v => v !== undefined && v !== null);
+  const maxOf = (arr) => { const d = definedVals(arr); return d.length ? Math.max(...d) : undefined; };
 
-  /* histórico completo de carga de um exercício, ordenado por data */
+  /* histórico completo de um exercício: uma entrada por sessão, cada uma com sua lista de séries */
   function historyFor(dayId, ei){
     return Object.keys(db.log)
       .sort()
       .map(date => {
         const s = db.log[date][dayId];
-        const v = s && s.loads ? s.loads[ei] : undefined;
-        return v === undefined ? null : { date, load: v };
+        const arr = s && s.loads ? s.loads[ei] : undefined;
+        return (arr && definedVals(arr).length) ? { date, sets: arr } : null;
       })
       .filter(Boolean);
   }
 
-  function bestLoad(dayId, ei, beforeDate){
+  /* maior peso de série já feito (antes de uma data, se informada) */
+  function bestSet(dayId, ei, beforeDate){
     const h = historyFor(dayId, ei).filter(p => !beforeDate || p.date < beforeDate);
-    return h.length ? Math.max(...h.map(p => p.load)) : undefined;
+    const vals = h.flatMap(p => definedVals(p.sets));
+    return vals.length ? Math.max(...vals) : undefined;
+  }
+
+  /* séries da última sessão registrada (antes de uma data, se informada) */
+  function lastSets(dayId, ei, beforeDate){
+    const h = historyFor(dayId, ei).filter(p => !beforeDate || p.date < beforeDate);
+    return h.length ? h[h.length - 1].sets : undefined;
   }
 
   /* estima 1RM pela fórmula de Epley usando o topo da faixa de reps do exercício (ex: "4 x 8-10" -> 10) */
   function estimate1RM(load, meta){
-    const m = meta.match(/(d+)(?:-(d+))?s*$/);
+    const m = meta.match(/(\d+)(?:-(\d+))?\s*$/);
     const reps = m ? Number(m[2] || m[1]) : 10;
     return load * (1 + reps / 30);
   }
@@ -1418,6 +1546,72 @@
     const map = {1:0, 2:1, 3:2, 4:3, 5:4};
     return map[new Date().getDay()] ?? 0;
   }
+
+  /* ---------- blocos de série: um input curto por série prevista ---------- */
+  const parseSetCount = (meta) => { const m = meta.match(/^(\d+)/); return m ? Math.max(Number(m[1]), 1) : 1; };
+
+  function makeBlockInput(dayId, ei, idx){
+    const label = document.createElement('label');
+    label.className = 'block';
+    const input = document.createElement('input');
+    input.className = 'block-input';
+    input.type = 'number';
+    input.inputMode = 'decimal';
+    input.step = '2.5';
+    input.min = '0';
+    input.max = '999';
+    input.placeholder = '0';
+    input.dataset.set = String(idx);
+    input.setAttribute('aria-label', 'Série ' + (idx + 1) + ', carga em quilos');
+    input.addEventListener('change', () => {
+      const raw = input.value.trim().replace(',', '.');
+      const v = raw === '' ? null : Math.max(0, Math.min(999, Number(raw)));
+      setSetWeight(dayId, ei, idx, (v === null || Number.isNaN(v)) ? null : v);
+      paintCard(dayId, ei);
+      renderCalendar();
+    });
+    label.appendChild(input);
+    return label;
+  }
+
+  // monta os blocos vazios na criação do card — quantidade = séries previstas no ex.meta
+  function buildBlocks(card, dayId, ei, ex){
+    const wrap = card.querySelector('.blocks');
+    wrap.innerHTML = '';
+    const count = parseSetCount(ex.meta);
+    for (let i = 0; i < count; i++) wrap.appendChild(makeBlockInput(dayId, ei, i));
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.className = 'block-add';
+    addBtn.setAttribute('aria-label', 'Adicionar série extra');
+    addBtn.textContent = '+';
+    addBtn.addEventListener('click', () => {
+      const n = wrap.querySelectorAll('.block-input').length;
+      addBtn.before(makeBlockInput(dayId, ei, n));
+      wrap.querySelector('.block-input[data-set="' + n + '"]').focus();
+    });
+    wrap.appendChild(addBtn);
+  }
+
+  // preenche os valores de hoje nos blocos já existentes, e cria blocos a
+  // mais se o histórico (ex: puxado da nuvem) tiver mais séries que o previsto.
+  // nunca mexe num input que o dedo do usuário ainda tá segurando.
+  function syncBlocks(card, dayId, ei){
+    const wrap = card.querySelector('.blocks');
+    const s = session(TODAY, dayId);
+    const arr = (s && s.loads && s.loads[ei]) || [];
+    let inputs = wrap.querySelectorAll('.block-input');
+    while (inputs.length < arr.length){
+      wrap.querySelector('.block-add').before(makeBlockInput(dayId, ei, inputs.length));
+      inputs = wrap.querySelectorAll('.block-input');
+    }
+    inputs.forEach((input, i) => {
+      if (document.activeElement === input) return;
+      const v = arr[i];
+      input.value = (v === undefined || v === null) ? '' : v;
+    });
+  }
+
 
   DATA.forEach((day) => {
     const tab = document.createElement('button');
@@ -1446,33 +1640,25 @@
         <button class="ex-thumb" aria-label="Ver execução de ${ex.name}">${figFor(ex)}</button>
         <div class="ex-body">
           <h3 class="ex-name">${ex.name}<span class="ex-pr">${icon('i-bolt','solid')} recorde</span></h3>
-          <div class="ex-meta">${icon('i-dumbbell')} ${ex.meta} <span class="ex-target">${ex.target}</span></div>
+          <div class="ex-meta">${icon('i-dumbbell')} ${ex.meta} <span class="ex-target">${ex.target}</span> <span class="ex-best"></span></div>
           <p class="ex-note">${ex.note}</p>
           <div class="ex-actions">
             <button class="btn btn-play">${icon('i-play','solid')} Ver vídeo</button>
             <button class="btn btn-done">${icon('i-circle')} <span>Marcar feito</span></button>
-            <label class="load">
-              <input class="load-input" type="number" inputmode="decimal" step="2.5" min="0" max="999"
-                     placeholder="0" aria-label="Carga usada em ${ex.name}, em quilos">
-              <span class="load-unit">kg</span>
-            </label>
-            <span class="load-hint"></span>
-            <span class="ex-1rm"></span>
           </div>
+          <div class="blocks-row">
+            <div class="blocks"></div>
+            <span class="blocks-unit">kg</span>
+          </div>
+          <span class="load-hint"></span>
+          <span class="ex-1rm"></span>
         </div>`;
 
       card.querySelector('.btn-done').addEventListener('click', () => toggleExercise(day.id, ei));
       card.querySelector('.btn-play').addEventListener('click', () => openExercise(day.id, ei, true));
       card.querySelector('.ex-thumb').addEventListener('click', () => openExercise(day.id, ei, false));
 
-      const input = card.querySelector('.load-input');
-      input.addEventListener('change', () => {
-        const raw = input.value.trim().replace(',', '.');
-        const v = raw === '' ? null : Math.max(0, Math.min(999, Number(raw)));
-        setLoad(day.id, ei, (v === null || Number.isNaN(v)) ? null : v);
-        paintCard(day.id, ei);
-        renderCalendar();
-      });
+      buildBlocks(card, day.id, ei, ex);
 
       panel.appendChild(card);
     });
@@ -1499,32 +1685,38 @@
       : `${icon('i-circle')} <span>Marcar feito</span>`;
     btn.setAttribute('aria-pressed', String(on));
 
+    syncBlocks(card, dayId, ei);
+
     const s = session(TODAY, dayId);
-    const today = s && s.loads ? s.loads[ei] : undefined;
-    const prev = lastLoad(dayId, ei);
-    const input = card.querySelector('.load-input');
-    if (document.activeElement !== input) input.value = today === undefined ? '' : today;
+    const arr = (s && s.loads && s.loads[ei]) || [];
+    const todayMax = maxOf(arr);
+    const last = lastSets(dayId, ei, TODAY);
+    const lastMax = maxOf(last);
 
     const hint = card.querySelector('.load-hint');
-    if (today !== undefined && prev !== undefined && today > prev){
+    if (todayMax !== undefined && lastMax !== undefined && todayMax > lastMax){
       hint.className = 'load-hint up';
-      hint.textContent = `subiu ${kg(Math.round((today - prev) * 10) / 10)} kg`;
-    } else if (today === undefined && prev !== undefined){
+      hint.textContent = `subiu ${kg(Math.round((todayMax - lastMax) * 10) / 10)} kg`;
+    } else if (todayMax === undefined && last){
       hint.className = 'load-hint';
-      hint.textContent = `última: ${kg(prev)} kg`;
+      hint.textContent = `última: ${definedVals(last).map(kg).join(' · ')} kg`;
     } else {
       hint.className = 'load-hint';
       hint.textContent = '';
     }
 
     const ex = DATA.find(d => d.id === dayId).exercises[ei];
-    const current = today !== undefined ? today : prev;
+    const forRM = todayMax !== undefined ? todayMax : lastMax;
     const rm = card.querySelector('.ex-1rm');
-    rm.textContent = current ? `~${kg(Math.round(estimate1RM(current, ex.meta) * 10) / 10)} kg em 1RM` : '';
+    rm.textContent = forRM ? `~${kg(Math.round(estimate1RM(forRM, ex.meta) * 10) / 10)} kg em 1RM` : '';
 
-    const best = bestLoad(dayId, ei, TODAY);
+    const best = bestSet(dayId, ei, TODAY);
     const pr = card.querySelector('.ex-pr');
-    pr.classList.toggle('show', today !== undefined && (best === undefined || today >= best));
+    pr.classList.toggle('show', todayMax !== undefined && (best === undefined || todayMax >= best));
+
+    const allTimeBest = maxOf([best, todayMax]);
+    const bestEl = card.querySelector('.ex-best');
+    bestEl.textContent = allTimeBest !== undefined ? `· recorde: ${kg(allTimeBest)} kg` : '';
   }
 
   function toggleExercise(dayId, ei){
@@ -1747,13 +1939,17 @@
       return;
     }
 
-    const pts = hist.slice(-10);
+    // pra sparkline/PR usa a série mais pesada de cada sessão (o top set)
+    const withTop = hist.map(p => ({ date: p.date, sets: p.sets, top: maxOf(p.sets) }));
+    const allTimeTop = Math.max(...withTop.map(p => p.top));
+
+    const pts = withTop.slice(-10);
     const W = 280, H = 64, pd = 6;
-    const min = Math.min(...pts.map(p => p.load)), max = Math.max(...pts.map(p => p.load));
+    const min = Math.min(...pts.map(p => p.top)), max = Math.max(...pts.map(p => p.top));
     const span = max - min || 1;
     const xy = (p, i) => {
       const x = pts.length > 1 ? pd + (i / (pts.length - 1)) * (W - pd * 2) : W / 2;
-      const y = H - pd - ((p.load - min) / span) * (H - pd * 2);
+      const y = H - pd - ((p.top - min) / span) * (H - pd * 2);
       return [x, y];
     };
     const coords = pts.map(xy);
@@ -1761,11 +1957,12 @@
     const dots = coords.map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${i === coords.length - 1 ? 4 : 2.5}" fill="${i === coords.length - 1 ? '#f0c64a' : '#d6a419'}"/>`).join('');
     const chart = `<svg class="modal-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Gráfico de progressão de carga"><polyline points="${line}" fill="none" stroke="#d6a419" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${dots}</svg>`;
 
-    const rows = hist.slice(-6).reverse().map((p, i, arr) => {
-      const isPR = p.load === Math.max(...hist.map(x => x.load));
+    const rows = withTop.slice(-6).reverse().map(p => {
+      const isPR = p.top === allTimeTop;
       const d = parseKey(p.date);
       const label = `${pad(d.getDate())}/${pad(d.getMonth() + 1)}`;
-      return `<li><span>${label}</span><b class="${isPR ? 'pr' : ''}">${kg(p.load)} kg${isPR ? ' 🏆' : ''}</b></li>`;
+      const setsTxt = definedVals(p.sets).map(kg).join(' · ');
+      return `<li><span>${label}</span><b class="${isPR ? 'pr' : ''}">${setsTxt} kg${isPR ? ' 🏆' : ''}</b></li>`;
     }).join('');
 
     body.innerHTML = chart + `<ul class="modal-log">${rows}</ul>`;
@@ -1819,13 +2016,14 @@
       let incoming;
       try { incoming = JSON.parse(reader.result); }
       catch (err) { noteBackup('Arquivo inválido — não é um backup do Zebra Coleman.', 'err'); return; }
-      if (!incoming || typeof incoming.log !== 'object' || typeof incoming.loads !== 'object'){
+      if (!incoming || typeof incoming.log !== 'object'){
         noteBackup('Arquivo inválido — não é um backup do Zebra Coleman.', 'err');
         return;
       }
-      // funde em vez de substituir: dia que já existe no aparelho não some
+      // funde em vez de substituir: dia que já existe no aparelho não some.
+      // backup antigo (carga como número único) é convertido pro formato de séries.
+      wrapLegacyLoads(incoming.log);
       Object.keys(incoming.log).forEach(k => { db.log[k] = { ...db.log[k], ...incoming.log[k] }; });
-      Object.keys(incoming.loads).forEach(id => { db.loads[id] = { ...db.loads[id], ...incoming.loads[id] }; });
       saveDB();
       const activeDay = document.querySelector('.tab.active').dataset.day;
       selectDay(activeDay);
