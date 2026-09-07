@@ -320,6 +320,30 @@
 
   /* ---------- rodapé ---------- */
   .foot{max-width:1080px;margin:0 auto;padding:2rem 1.25rem 0;}
+
+  /* ---------- observação do dia: mantém a sequência em dia sem academia ---------- */
+  .note-box{margin-bottom:1.1rem;}
+  .note-label{
+    display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem;
+    font-family:var(--sign);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--bone-dim);
+  }
+  .note-label .icon{color:var(--gold);width:1em;height:1em;}
+  .note-input{
+    display:block;width:100%;resize:vertical;min-height:2.6rem;
+    background:var(--stone-700);border:1px solid var(--stone-600);
+    padding:.6rem .75rem;color:var(--bone);
+    font-family:var(--body);font-size:.88rem;line-height:1.4;
+    transition:border-color 160ms ease;
+  }
+  .note-input::placeholder{color:var(--stone-600);}
+  .note-input:focus{outline:none;border-color:var(--gold);}
+  .note-hint{
+    display:block;margin-top:.35rem;font-family:var(--sign);font-size:.68rem;
+    color:var(--stone-600);letter-spacing:.02em;
+  }
+  .note-hint.ok{color:var(--gold);}
+
   .reset-btn{
     display:inline-flex;align-items:center;gap:.5rem;
     background:none;border:1px solid rgba(239,230,210,.18);
@@ -522,6 +546,12 @@
   .cal-cell.lv3{background:var(--gold);border-color:var(--gold-hot);color:var(--stone-900);font-weight:700;}
   .cal-cell.today{box-shadow:inset 0 0 0 2px var(--velvet-hot);}
   .cal-cell:not(.empty):hover{transform:translateY(-2px);}
+  /* dia sem exercício de academia, mas com observação — conta pra sequência */
+  .cal-cell.has-note::after{
+    content:"";position:absolute;bottom:3px;right:3px;width:5px;height:5px;
+    border-radius:50%;background:var(--velvet-hot);
+  }
+  .cal-cell.lv3.has-note::after{background:var(--stone-900);}
 
   .cal-stats{display:grid;gap:.6rem;}
   .stat{
@@ -808,6 +838,16 @@
 </section>
 
 <div class="wrap foot">
+  <div class="note-box">
+    <label class="note-label" for="day-note">
+      <svg class="icon"><use href="#i-bolt"/></svg>
+      Sem treino de academia hoje? Anota o que rolou
+    </label>
+    <textarea id="day-note" class="note-input" rows="2" maxlength="280"
+      placeholder="Feriado, sem academia — fiz flexão, abdominal, caminhada..."></textarea>
+    <span class="note-hint" id="note-hint">Conta pra sequência mesmo sem marcar exercício.</span>
+  </div>
+
   <button class="reset-btn" id="reset-btn">
     <svg class="icon"><use href="#i-undo"/></svg>
     Tirar as anilhas do dia
@@ -1774,19 +1814,40 @@
       total += day.exercises.length;
       ids.push(day.label);
     });
-    return total ? { done, total, ids } : null;
+    if (!total && !rec.note) return null;
+    return { done, total, ids, note: rec.note || '' };
   }
 
   function level(st){
-    if (!st || !st.done) return 0;
+    if (!st || !st.total) return 0;
     const r = st.done / st.total;
     return r >= 1 ? 3 : r >= .5 ? 2 : 1;
+  }
+
+  // observação livre do dia — sem academia mas fez algo, ainda conta pra sequência
+  function getNote(dateKey){
+    const rec = db.log[dateKey];
+    return rec && rec.note ? rec.note : '';
+  }
+
+  function setNote(dateKey, text){
+    const trimmed = (text || '').trim().slice(0, 280);
+    if (!trimmed){
+      if (db.log[dateKey]){
+        delete db.log[dateKey].note;
+        if (!Object.keys(db.log[dateKey]).length) delete db.log[dateKey];
+      }
+    } else {
+      db.log[dateKey] = db.log[dateKey] || {};
+      db.log[dateKey].note = trimmed;
+    }
+    saveDB();
   }
 
   function streak(){
     const d = new Date();
     let n = 0;
-    const trained = (dt) => { const st = dayStats(keyOf(dt)); return !!(st && st.done); };
+    const trained = (dt) => { const st = dayStats(keyOf(dt)); return !!(st && (st.done || st.note)); };
     // o dia de hoje ainda não acabou: se ainda não treinou, começa a contar de ontem
     if (!trained(d)) d.setDate(d.getDate() - 1);
     for (let i = 0; i < 400; i++){
@@ -1814,12 +1875,17 @@
       const k = `${view.getFullYear()}-${pad(view.getMonth() + 1)}-${pad(d)}`;
       const st = dayStats(k);
       const lv = level(st);
-      if (lv) monthDone++;
+      if (lv || (st && st.note)) monthDone++;
       const wd = new Date(view.getFullYear(), view.getMonth(), d).getDay();
       const cls = ['cal-cell', `lv${lv}`];
       if (k === TODAY) cls.push('today');
       if (wd === 0 || wd === 6) cls.push('rest');
-      const title = st ? `${st.ids.join(', ')} — ${st.done}/${st.total} exercícios` : 'sem treino';
+      if (st && st.note) cls.push('has-note');
+      let title = 'sem treino';
+      if (st){
+        title = st.total ? `${st.ids.join(', ')} — ${st.done}/${st.total} exercícios` : 'sem exercício de academia';
+        if (st.note) title += ' · ' + st.note;
+      }
       html += `<div class="${cls.join(' ')}" title="${k} · ${title}"><span>${d}</span></div>`;
     }
     calGrid.innerHTML = html;
@@ -1877,6 +1943,7 @@
     const box = el.querySelector('.nudge-box');
     const dates = Object.keys(db.log).filter(k => {
       const rec = db.log[k];
+      if (rec.note) return true;
       return Object.keys(rec).some(id => (rec[id].done || []).length > 0);
     }).sort();
     if (!dates.length){ el.classList.remove('show'); return; }
@@ -2032,6 +2099,18 @@
     };
     reader.readAsText(file);
     e.target.value = '';
+  });
+
+  /* ---------- observação do dia ---------- */
+  const noteInput = document.getElementById('day-note');
+  const noteHint = document.getElementById('note-hint');
+  noteInput.value = getNote(TODAY);
+  noteInput.addEventListener('change', () => {
+    setNote(TODAY, noteInput.value);
+    const saved = getNote(TODAY);
+    noteHint.textContent = saved ? 'Salvo — conta pra sequência de hoje.' : 'Conta pra sequência mesmo sem marcar exercício.';
+    noteHint.className = 'note-hint' + (saved ? ' ok' : '');
+    renderCalendar();
   });
 
   renderCalendar();
