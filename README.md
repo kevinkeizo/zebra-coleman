@@ -9,13 +9,12 @@ Live Server do VS Code** — em `file://` o YouTube bloqueia o player embutido, 
 o botão de play abre o vídeo numa aba nova em vez de tocar dentro do modal.
 
 ## O programa
-5 dias, 4 exercícios por dia, split upper/lower alternado com sexta de ombro e braço.
-Faixa principal de 8-12 reps, 4-5 séries nos compostos, 1-2 reps na reserva na última
-série. Priorizado equipamento de máquina onde existe um bom equivalente (supino, remada,
-desenvolvimento, peck deck, cadeira extensora/abdutora/adutora, leg press, mesa
-flexora, pulley) — mais seguro e mais fácil de manter execução limpa sem supervisão.
-Ficou livre só onde a máquina muda o estímulo de menos (agachamento) ou onde o
-halter já é simples o suficiente (elevações, rosca, encolhimento, kickback).
+5 dias: dois de perna (Segunda e Quarta, **idênticos** entre si), dois upper
+(Terça e Quinta) e um de ombro/braço (Sexta). Dia de perna é 5 exercícios —
+Agachamento na rack + Cadeira adutora + Cadeira abdutora + Leg press + Cadeira
+extensora — o resto segue 4 por dia. Priorizado equipamento de máquina onde
+existe bom equivalente — mais seguro, mais fácil de manter execução limpa
+sem supervisão.
 
 Volume semanal calibrado pelos landmarks MEV/MAV (Renaissance Periodization):
 
@@ -24,22 +23,21 @@ Volume semanal calibrado pelos landmarks MEV/MAV (Renaissance Periodization):
 | Peito                      | 8             | 8   | 12-20 | no MEV |
 | Costas                     | 10            | 10  | 14-22 | no MEV |
 | Ombro                      | 11            | 8   | 16-22 | acima do MEV |
-| Quadríceps                 | 12            | 8   | 12-18 | **no MAV** |
-| Posterior de coxa          | 4             | 6   | 10-16 | ⚠️ **abaixo do MEV** |
+| Quadríceps                 | 24            | 8   | 12-18 | bem acima do MAV |
+| Posterior de coxa          | 0             | 6   | 10-16 | ⚠️ **zerado** |
 | Bíceps                     | 8             | 8   | 14-20 | no MEV |
 | Tríceps                    | 7             | 6   | 10-14 | acima do MEV |
-| Panturrilha                | 8             | 8   | 12-16 | no MEV |
+| Panturrilha                | 0             | 8   | 12-16 | ⚠️ **zerado** |
 
-Mais três isolados fora da tabela padrão de MEV (glúteo médio, adutores, trapézio,
-3-4 séries cada) — reforço pontual, não carregam volume de um grupo grande.
+Mais dois isolados fora da tabela padrão (adutores 8 séries, glúteo médio via
+abdutora 6 séries) — reforço pontual, não substituem grupo grande nenhum.
 
-68 séries/semana nos grupos rastreados. **Posterior de coxa ficou abaixo do
-mínimo** desde que o Stiff (Terça) virou Cadeira adutora — troca pedida
-explicitamente, mas o trade-off é real: adutor treina virilha, não isquiotibial,
-então esse volume não se soma. Se quiser fechar esse buraco, os dois substitutos
-que mantêm o padrão de hip-hinge do Stiff são **pulley entre as pernas** ou
-**banco romano** (esse último desloca um pouco o foco pro glúteo/lombar). Até lá,
-o posterior sobrevive só da Mesa flexora sentado (Quinta).
+**Panturrilha e posterior de coxa saíram do programa de propósito** — decisão
+explícita do usuário, pra focar o dia de perna só no que ele realmente faz na
+academia. Quadríceps ficou com volume bem acima do ideal (agachamento + leg
+press + extensora, nos dois dias de perna) — isso é esperado quando o foco
+migra de "mais exercícios variados" pra "menos exercícios, mais pesados,
+repetidos". Se um dia quiser reintroduzir panturrilha ou posterior, é só pedir.
 
 Progressão continua vindo principalmente da carga — o campo de kg é o que decide
 se o volume de hoje ainda serve amanhã.
