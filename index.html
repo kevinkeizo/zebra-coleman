@@ -383,20 +383,6 @@
   .sync-note.err{color:var(--velvet-hot);}
   .sync-note .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none;}
 
-  .coach{
-    margin-top:1.75rem;padding:1.35rem 1.5rem;
-    border:var(--rule);border-top:3px solid var(--velvet);
-    background:linear-gradient(180deg, rgba(224,39,28,.10), transparent);
-  }
-  .coach h3{
-    margin:0 0 .6rem;font-family:var(--sign);font-weight:600;font-size:.76rem;
-    letter-spacing:.24em;text-transform:uppercase;color:var(--velvet-hot);
-    display:flex;align-items:center;gap:.5rem;
-  }
-  .coach p{margin:0 0 .6rem;font-size:.9rem;color:var(--bone-dim);}
-  .coach p:last-child{margin-bottom:0;}
-  .coach b{color:var(--bone);font-weight:600;}
-
   /* ---------- alvo muscular + campo de carga ---------- */
   .ex-target{
     display:inline-block;margin-left:.5rem;padding:.05rem .45rem;
@@ -497,88 +483,6 @@
   .nudge-box .icon{color:var(--velvet-hot);flex:none;}
   .nudge-box b{color:var(--gold);}
 
-  /* ---------- comparação semanal ---------- */
-  .stat.wk b{font-size:1.5rem;}
-  .stat-delta{font-family:var(--sign);font-size:.66rem;letter-spacing:.06em;}
-  .stat-delta.up{color:var(--gold);}
-  .stat-delta.down{color:var(--bone-dim);}
-
-  /* ---------- calendário ---------- */
-  .cal-section{max-width:1080px;margin:0 auto;padding:2.5rem 1.25rem 0;}
-  .cal-top{
-    display:flex;align-items:center;justify-content:space-between;gap:1rem;
-    padding-bottom:.9rem;border-bottom:var(--rule);margin-bottom:1.1rem;
-  }
-  .cal-top h2{
-    margin:0;font-family:var(--display);text-transform:uppercase;
-    font-size:1.25rem;letter-spacing:.02em;color:var(--bone);
-  }
-  .cal-nav{display:flex;align-items:center;gap:.5rem;}
-  .cal-nav button{
-    width:2rem;height:2rem;display:grid;place-items:center;cursor:pointer;
-    background:none;border:1px solid var(--stone-600);color:var(--bone-dim);
-    transition:transform 140ms var(--ease-out),color 160ms ease,border-color 160ms ease;
-  }
-  .cal-nav button:hover{color:var(--gold);border-color:var(--gold);}
-  .cal-nav button:active{transform:scale(.94);}
-  #cal-title{
-    min-width:11rem;text-align:center;
-    font-family:var(--sign);font-size:.78rem;letter-spacing:.16em;
-    text-transform:uppercase;color:var(--gold);
-  }
-
-  .cal-body{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:1.5rem;align-items:start;}
-  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.3rem;}
-  .cal-wd{
-    text-align:center;padding-bottom:.35rem;
-    font-family:var(--sign);font-size:.66rem;color:var(--stone-600);
-  }
-  .cal-cell{
-    position:relative;aspect-ratio:1;display:grid;place-items:center;
-    border:1px solid var(--stone-600);background:var(--stone-700);
-    font-family:var(--sign);font-size:.72rem;color:var(--bone-dim);
-    transition:transform 160ms var(--ease-out),background 200ms ease,border-color 200ms ease;
-  }
-  .cal-cell.empty{border:0;background:none;}
-  .cal-cell.rest{background:transparent;border-style:dashed;}
-  .cal-cell.lv1{background:rgba(214,164,25,.18);border-color:rgba(214,164,25,.35);color:var(--bone);}
-  .cal-cell.lv2{background:rgba(214,164,25,.42);border-color:rgba(214,164,25,.6);color:var(--bone);}
-  .cal-cell.lv3{background:var(--gold);border-color:var(--gold-hot);color:var(--stone-900);font-weight:700;}
-  .cal-cell.today{box-shadow:inset 0 0 0 2px var(--velvet-hot);}
-  .cal-cell:not(.empty):hover{transform:translateY(-2px);}
-  /* dia sem exercício de academia, mas com observação — conta pra sequência */
-  .cal-cell.has-note::after{
-    content:"";position:absolute;bottom:3px;right:3px;width:5px;height:5px;
-    border-radius:50%;background:var(--velvet-hot);
-  }
-  .cal-cell.lv3.has-note::after{background:var(--stone-900);}
-
-  .cal-stats{display:grid;gap:.6rem;}
-  .stat{
-    border:var(--rule);border-left:3px solid var(--gold);
-    background:var(--stone-700);padding:.75rem .9rem;
-  }
-  .stat b{
-    display:block;font-family:var(--display);font-size:1.9rem;line-height:1;
-    color:var(--gold);
-  }
-  .stat span{
-    font-family:var(--sign);font-size:.68rem;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--bone-dim);
-  }
-  .cal-legend{
-    display:flex;align-items:center;gap:.4rem;margin-top:.3rem;
-    font-family:var(--sign);font-size:.64rem;letter-spacing:.1em;color:var(--stone-600);
-  }
-  .cal-legend i{width:12px;height:12px;border:1px solid var(--stone-600);display:inline-block;}
-  .cal-legend i.lv1{background:rgba(214,164,25,.18);}
-  .cal-legend i.lv2{background:rgba(214,164,25,.42);}
-  .cal-legend i.lv3{background:var(--gold);}
-
-  @media (max-width:760px){
-    .cal-body{grid-template-columns:minmax(0,1fr);}
-    .cal-stats{grid-template-columns:repeat(3,1fr);}
-  }
 
   /* ---------- modal ---------- */
   .overlay{
@@ -678,7 +582,7 @@
 
   @media (max-width:640px){
     body{padding-bottom:2.5rem;}
-    .wrap,.rack,.cal-section,.tabs,.hero-grid,.foot{
+    .wrap,.rack,.tabs,.hero-grid,.foot{
       padding-left:max(1rem, env(safe-area-inset-left));
       padding-right:max(1rem, env(safe-area-inset-right));
     }
@@ -703,13 +607,6 @@
     .barbell{min-height:60px;}
     .plate{width:13px;}
     .plate.h56{height:46px;} .plate.h48{height:40px;} .plate.h40{height:34px;}
-
-    .cal-cell{font-size:.64rem;}
-    .cal-stats{grid-template-columns:repeat(3,1fr);gap:.4rem;}
-    .stat{padding:.6rem .5rem;}
-    .stat b{font-size:1.5rem;}
-    .stat span{font-size:.6rem;letter-spacing:.08em;}
-    #cal-title{min-width:0;flex:1;font-size:.72rem;}
 
     /* o modal vira gaveta: sobe de baixo, do jeito que celular pede */
     .overlay{padding:0;align-items:flex-end;}
@@ -809,34 +706,6 @@
 <div class="nudge" id="nudge"><div class="nudge-box"></div></div>
 <main class="wrap" id="panels"></main>
 
-<section class="cal-section" aria-label="Calendário de treinos">
-  <div class="cal-top">
-    <div style="display:flex;align-items:center;flex-wrap:wrap;">
-      <h2>Diário de bordo</h2>
-      <span class="sync-note" id="sync-note"><span class="dot"></span><span id="sync-text">conectando…</span></span>
-    </div>
-    <div class="cal-nav">
-      <button id="cal-prev" aria-label="Mês anterior">‹</button>
-      <span id="cal-title"></span>
-      <button id="cal-next" aria-label="Próximo mês">›</button>
-    </div>
-  </div>
-  <div class="cal-body">
-    <div>
-      <div class="cal-grid" id="cal-grid"></div>
-      <div class="cal-legend">
-        <span>menos</span><i class="lv0"></i><i class="lv1"></i><i class="lv2"></i><i class="lv3"></i><span>dia fechado</span>
-      </div>
-    </div>
-    <div class="cal-stats">
-      <div class="stat"><b id="stat-streak">0</b><span id="stat-streak-unit">dias seguidos</span></div>
-      <div class="stat"><b id="stat-month">0</b><span>treinos no mês</span></div>
-      <div class="stat"><b id="stat-load">0</b><span>kg somados no mês</span></div>
-      <div class="stat wk"><b id="stat-week">0</b><span>kg essa semana</span><div class="stat-delta" id="stat-week-delta"></div></div>
-    </div>
-  </div>
-</section>
-
 <div class="wrap foot">
   <div class="note-box">
     <label class="note-label" for="day-note">
@@ -864,14 +733,7 @@
       <input type="file" id="import-input" accept="application/json" style="display:none;">
     </label>
     <span class="backup-note" id="backup-note">Salva um arquivo com todo o histórico. Guarda ele em algum lugar — se o navegador apagar os dados de novo, é só restaurar.</span>
-  </div>
-
-  <div class="coach">
-    <h3><svg class="icon"><use href="#i-megaphone"/></svg> O rei falou</h3>
-    <p><b>LIGHTWEIGHT, BABY!</b> Só que peso leve é o que você <i>levanta</i>, não o que você <i>bota na barra</i>. Última série de cada exercício tem que arder. Se sobrou fôlego no fim, a carga tava de brincadeira.</p>
-    <p><b>Progressão:</b> bateu todas as reps do intervalo em todas as séries? Sobe <b>2,5 kg</b> na próxima sessão. Anota a carga no campo <b>kg</b> — o app guarda e te mostra a da última vez.</p>
-    <p><b>Descanso:</b> 2 a 3 minutos nos compostos (supino, agachamento, remada), 60 a 90 segundos nos isolados. Descansar pouco não é intensidade, é só fazer menos série boa.</p>
-    <p><b>Execução ruim não conta como série feita.</b> Marcar a anilha sem fazer direito é você mentindo pra você mesmo — e o espelho não cai nessa.</p>
+    <span class="sync-note" id="sync-note"><span class="dot"></span><span id="sync-text">conectando…</span></span>
   </div>
 </div>
 
@@ -1499,7 +1361,7 @@
         saveDB();
         const activeTab = document.querySelector('.tab.active');
         if (activeTab) selectDay(activeTab.dataset.day);
-        renderCalendar();
+        renderNudge();
         setSyncNote('sincronizado', 'ok');
       })
       .catch(() => setSyncNote('offline — usando só o que tá salvo aqui', 'err'));
@@ -1624,7 +1486,7 @@
       const v = raw === '' ? null : Math.max(0, Math.min(999, Number(raw)));
       setSetWeight(dayId, ei, idx, (v === null || Number.isNaN(v)) ? null : v);
       paintCard(dayId, ei);
-      renderCalendar();
+      renderNudge();
     });
     label.appendChild(input);
     return label;
@@ -1779,7 +1641,7 @@
     setDone(dayId, ei, !doneSet(dayId).has(ei));
     paintCard(dayId, ei);
     updateDay(dayId);
-    renderCalendar();
+    renderNudge();
   }
 
   function updateDay(dayId){
@@ -1814,33 +1676,7 @@
   /* =========================================================
      CALENDÁRIO + SEQUÊNCIA
      ========================================================= */
-  const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-  const WD = ['D','S','T','Q','Q','S','S'];
-  const view = new Date();
-  view.setDate(1);
-
-  function dayStats(dateKey){
-    const rec = db.log[dateKey];
-    if (!rec) return null;
-    let done = 0, total = 0, ids = [];
-    Object.keys(rec).forEach(id => {
-      const day = DATA.find(d => d.id === id);
-      if (!day) return;
-      done += (rec[id].done || []).length;
-      total += day.exercises.length;
-      ids.push(day.label);
-    });
-    if (!total && !rec.note) return null;
-    return { done, total, ids, note: rec.note || '' };
-  }
-
-  function level(st){
-    if (!st || !st.total) return 0;
-    const r = st.done / st.total;
-    return r >= 1 ? 3 : r >= .5 ? 2 : 1;
-  }
-
-  // observação livre do dia — sem academia mas fez algo, ainda conta pra sequência
+  // observação livre do dia — sem academia mas fez algo, ainda conta pro lembrete
   function getNote(dateKey){
     const rec = db.log[dateKey];
     return rec && rec.note ? rec.note : '';
@@ -1858,100 +1694,6 @@
       db.log[dateKey].note = trimmed;
     }
     saveDB();
-  }
-
-  function streak(){
-    const d = new Date();
-    let n = 0;
-    const trained = (dt) => { const st = dayStats(keyOf(dt)); return !!(st && (st.done || st.note)); };
-    // o dia de hoje ainda não acabou: se ainda não treinou, começa a contar de ontem
-    if (!trained(d)) d.setDate(d.getDate() - 1);
-    for (let i = 0; i < 400; i++){
-      const wd = d.getDay();
-      if (wd === 0 || wd === 6){ d.setDate(d.getDate() - 1); continue; } // fim de semana não quebra
-      if (trained(d)) { n++; d.setDate(d.getDate() - 1); }
-      else break;
-    }
-    return n;
-  }
-
-  const calGrid = document.getElementById('cal-grid');
-  const calTitle = document.getElementById('cal-title');
-
-  function renderCalendar(){
-    calTitle.textContent = `${MONTHS[view.getMonth()]} ${view.getFullYear()}`;
-
-    let html = WD.map(w => `<div class="cal-wd">${w}</div>`).join('');
-    const first = new Date(view.getFullYear(), view.getMonth(), 1);
-    const days = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
-    for (let i = 0; i < first.getDay(); i++) html += '<div class="cal-cell empty"></div>';
-
-    let monthDone = 0;
-    for (let d = 1; d <= days; d++){
-      const k = `${view.getFullYear()}-${pad(view.getMonth() + 1)}-${pad(d)}`;
-      const st = dayStats(k);
-      const lv = level(st);
-      if (lv || (st && st.note)) monthDone++;
-      const wd = new Date(view.getFullYear(), view.getMonth(), d).getDay();
-      const cls = ['cal-cell', `lv${lv}`];
-      if (k === TODAY) cls.push('today');
-      if (wd === 0 || wd === 6) cls.push('rest');
-      if (st && st.note) cls.push('has-note');
-      let title = 'sem treino';
-      if (st){
-        title = st.total ? `${st.ids.join(', ')} — ${st.done}/${st.total} exercícios` : 'sem exercício de academia';
-        if (st.note) title += ' · ' + st.note;
-      }
-      html += `<div class="${cls.join(' ')}" title="${k} · ${title}"><span>${d}</span></div>`;
-    }
-    calGrid.innerHTML = html;
-
-    const s = streak();
-    document.getElementById('stat-streak').textContent = s;
-    document.getElementById('stat-streak-unit').textContent = s === 1 ? 'dia seguido' : 'dias seguidos';
-    document.getElementById('stat-month').textContent = monthDone;
-
-    // total de kg movidos no mês: carga × séries × reps é chute, então soma carga marcada
-    let vol = 0;
-    Object.keys(db.log).forEach(k => {
-      if (!k.startsWith(`${view.getFullYear()}-${pad(view.getMonth() + 1)}`)) return;
-      Object.keys(db.log[k]).forEach(id => {
-        const loads = db.log[k][id].loads || {};
-        Object.keys(loads).forEach(i => { vol += Number(loads[i]) || 0; });
-      });
-    });
-    document.getElementById('stat-load').textContent = vol ? kg(Math.round(vol)) : '0';
-
-    // semana atual (segunda a domingo) vs semana anterior, pra ver se o ritmo subiu
-    const weekVolume = (offset) => {
-      const ref = new Date();
-      const dow = (ref.getDay() + 6) % 7; // segunda = 0
-      ref.setDate(ref.getDate() - dow - offset * 7);
-      let total = 0;
-      for (let i = 0; i < 7; i++){
-        const k = keyOf(ref);
-        const rec = db.log[k];
-        if (rec) Object.keys(rec).forEach(id => {
-          const loads = rec[id].loads || {};
-          Object.keys(loads).forEach(x => { total += Number(loads[x]) || 0; });
-        });
-        ref.setDate(ref.getDate() + 1);
-      }
-      return total;
-    };
-    const thisWeek = weekVolume(0), lastWeek = weekVolume(1);
-    document.getElementById('stat-week').textContent = thisWeek ? kg(Math.round(thisWeek)) : '0';
-    const delta = document.getElementById('stat-week-delta');
-    if (lastWeek > 0){
-      const pct = Math.round(((thisWeek - lastWeek) / lastWeek) * 100);
-      delta.className = 'stat-delta ' + (pct >= 0 ? 'up' : 'down');
-      delta.textContent = (pct >= 0 ? '+' : '') + pct + '% vs semana passada';
-    } else {
-      delta.className = 'stat-delta';
-      delta.textContent = thisWeek ? 'primeira semana registrada' : '';
-    }
-
-    renderNudge();
   }
 
   function renderNudge(){
@@ -1972,8 +1714,6 @@
     el.classList.add('show');
   }
 
-  document.getElementById('cal-prev').addEventListener('click', () => { view.setMonth(view.getMonth() - 1); renderCalendar(); });
-  document.getElementById('cal-next').addEventListener('click', () => { view.setMonth(view.getMonth() + 1); renderCalendar(); });
 
   /* ---------- modal com vídeo ---------- */
   const overlay = document.getElementById('overlay');
@@ -2068,7 +1808,7 @@
     saveDB();
     DATA.find(d => d.id === dayId).exercises.forEach((_, ei) => paintCard(dayId, ei));
     updateDay(dayId);
-    renderCalendar();
+    renderNudge();
   });
 
   /* ---------- backup: exporta e restaura o localStorage inteiro ---------- */
@@ -2110,7 +1850,7 @@
       saveDB();
       const activeDay = document.querySelector('.tab.active').dataset.day;
       selectDay(activeDay);
-      renderCalendar();
+      renderNudge();
       noteBackup('Backup restaurado — histórico mesclado com o que já tinha aqui.', 'ok');
     };
     reader.readAsText(file);
@@ -2126,10 +1866,10 @@
     const saved = getNote(TODAY);
     noteHint.textContent = saved ? 'Salvo — conta pra sequência de hoje.' : 'Conta pra sequência mesmo sem marcar exercício.';
     noteHint.className = 'note-hint' + (saved ? ' ok' : '');
-    renderCalendar();
+    renderNudge();
   });
 
-  renderCalendar();
+  renderNudge();
   selectDay(DATA[todayIndex()].id);
   pullRemote();
 </script>
